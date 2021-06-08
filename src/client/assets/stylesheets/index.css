@@ -9,7 +9,7 @@
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
 
@@ -21,7 +21,7 @@ body {
 }
 
 header {
-  background-image: url('https://via.placeholder.com/1150');
+  background-image: url('https://www.motoringresearch.com/wp-content/uploads/2020/02/001-Best-Mobile-Racing-Games-1920x1080.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -91,11 +91,20 @@ section {
 }
 
 footer {
-  height: 200px;
-  background-color: black;
+  height: 80px;
+  background-color: #222;
+}
+
+p.copyright {
+  margin-top: 2em;
+  text-align: center;
+  font-size: 15px;
+  color: #aaa;
+  margin-bottom: 0;
 }
 
 /* -------------------  TABLET  --------------------- */
+
 @media (min-width: 768px) {
   header {
     height: 100vh;

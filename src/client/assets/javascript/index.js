@@ -106,7 +106,7 @@ async function handleCreateRace() {
 		await startRace(store.race_id);
 
 		// Call the async function runRace
-		await runRace();
+		await runRace(store.race_id);
 	}
 	catch (error) {
 		console.log('Error creating new race ::', error.message);
@@ -115,25 +115,32 @@ async function handleCreateRace() {
 }
 
 function runRace(raceID) {
-	return new Promise(resolve => {
-		// TODO - use Javascript's built in setInterval method to get race info every 500ms
+	return new Promise((resolve, reject) => {
 
-		/* 
-			TODO - if the race info status property is "in-progress", update the leaderboard by calling:
-	
-			renderAt('#leaderBoard', raceProgress(res.positions))
-		*/
+		function sortLeaderBoard(raceID) {
+			// Get race information
+			getRace(raceID)
+				.then((res) => {
+					// Update the leaderboard for on going race
+					if (res.status === 'in-progress') {
+						renderAt('#leaderBoard', raceProgress(res.positions));
+					}
+					// Render final results for finished race 
+					else if (res.status === 'finished') {
+						clearInterval(raceInterval); // Stop the interval from repeating
+						renderAt('#race', resultsView(res.positions)); // to render the results view
+						reslove(res);// resolve the promise	
+					}
+					else {
+						reject('Error:: Race status is not correct');
+					}
+				})
+				.catch(err => console.log('Error in sorting the leader board::', err));
+		}
 
-		/* 
-			TODO - if the race info status property is "finished", run the following:
-	
-			clearInterval(raceInterval) // to stop the interval from repeating
-			renderAt('#race', resultsView(res.positions)) // to render the results view
-			reslove(res) // resolve the promise
-		*/
-		const raceInfo = setInterval(updateRaceBoard, 500);
+		// Use setInterval to sort the leaderBoard every 500ms
+		const raceInterval = setInterval(sortLeaderBoard, 500, raceID);
 	})
-	// remember to add error handling for the Promise
 }
 
 
@@ -313,30 +320,39 @@ function resultsView(positions) {
 }
 
 function raceProgress(positions) {
-	let userPlayer = positions.find(e => e.id === store.player_id)
-	userPlayer.driver_name += " (you)"
+	console.log(store.player_id);
+	try {
+		positions.forEach(player => {
+			if (parseInt(player.id) === parseInt(store.player_id)) {
+				userPlayer.driver_name += " (you)";
+			};
+		});
 
-	positions = positions.sort((a, b) => (a.segment > b.segment) ? -1 : 1)
-	let count = 1
+		positions = positions.sort((a, b) => (a.segment > b.segment) ? -1 : 1)
+		let count = 1
 
-	const results = positions.map(p => {
+		const results = positions.map(p => {
+			return `
+				<tr>
+					<td>
+						<h3>${count++} - ${p.driver_name}</h3>
+					</td>
+				</tr>
+			`
+		})
+
 		return `
-			<tr>
-				<td>
-					<h3>${count++} - ${p.driver_name}</h3>
-				</td>
-			</tr>
+			<main>
+				<h3>Leaderboard</h3>
+				<section id="leaderBoard">
+					${results}
+				</section>
+			</main>
 		`
-	})
-
-	return `
-		<main>
-			<h3>Leaderboard</h3>
-			<section id="leaderBoard">
-				${results}
-			</section>
-		</main>
-	`
+	}
+	catch (error) {
+		console.log('Error in updating race board - raceProgress::', error)
+	};
 }
 
 function renderAt(element, html) {

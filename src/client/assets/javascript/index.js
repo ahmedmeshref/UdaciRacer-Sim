@@ -15,8 +15,8 @@ const appVars = {
 
 // We need our javascript to wait until the DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-	onPageLoad()
-	setupClickHandlers()
+	onPageLoad();
+	setupClickHandlers();
 })
 
 async function onPageLoad() {
@@ -40,29 +40,33 @@ async function onPageLoad() {
 
 function setupClickHandlers() {
 	document.addEventListener('click', function (event) {
-		const { target } = event
+		const { target } = event;
 
 		// Race track form field
 		if (target.matches('.card.track')) {
-			handleSelectTrack(target)
+			handleSelectTrack(target);
+		} else if (target.parentElement.matches('.card.track')) {
+			handleSelectTrack(target.parentElement);
 		}
 
 		// Podracer form field
 		if (target.matches('.card.podracer')) {
-			handleSelectPodRacer(target)
+			handleSelectPodRacer(target);
+		} else if (target.parentElement.matches('.card.podracer')) {
+			handleSelectPodRacer(target.parentElement);
 		}
 
 		// Submit create race form
 		if (target.matches('#submit-create-race')) {
-			event.preventDefault()
+			event.preventDefault();
 
 			// start race
-			handleCreateRace()
+			handleCreateRace();
 		}
 
 		// Handle acceleration click
 		if (target.matches('#gas-peddle')) {
-			handleAccelerate(target)
+			handleAccelerate(target);
 		}
 
 	}, false)
@@ -168,7 +172,6 @@ function handleSelectTrack(target) {
 
 	// save the selected track id to the store
 	store.track_id = target.id;
-
 }
 
 function handleAccelerate() {

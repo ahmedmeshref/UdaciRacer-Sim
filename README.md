@@ -22,8 +22,6 @@ The project has the 2 main parts:
 
 ## Getting Started
 
-In order to build this game, we need to run two things: the game engine API and the front end.
-
 ### Start the Server
 
 The game engine has been compiled down to a binary so that you can run it on any system. Because of this, you cannot

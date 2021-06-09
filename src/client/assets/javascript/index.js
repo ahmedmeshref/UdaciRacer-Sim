@@ -1,10 +1,16 @@
 // PROVIDED CODE BELOW (LINES 1 - 80) DO NOT REMOVE
 
 // The store will hold all information needed globally
-var store = {
+let store = {
 	track_id: undefined,
 	player_id: undefined,
 	race_id: undefined,
+}
+
+// The appVars stores all of the application constant variables  
+const appVars = {
+	SERVER: 'http://localhost:8000'
+
 }
 
 // We need our javascript to wait until the DOM is loaded
@@ -27,8 +33,8 @@ async function onPageLoad() {
 				renderAt('#racers', html)
 			})
 	} catch(error) {
-		console.log("Problem getting tracks and racers ::", error.message)
-		console.error(error)
+		console.log("Problem getting tracks and racers ::", error.message);
+		console.error(error);
 	}
 }
 
@@ -305,14 +311,12 @@ function renderAt(element, html) {
 
 // API CALLS ------------------------------------------------
 
-const SERVER = 'http://localhost:8000'
-
 function defaultFetchOpts() {
 	return {
 		mode: 'cors',
 		headers: {
 			'Content-Type': 'application/json',
-			'Access-Control-Allow-Origin' : SERVER,
+			'Access-Control-Allow-Origin' : appVars.SERVER,
 		},
 	}
 }
@@ -321,6 +325,13 @@ function defaultFetchOpts() {
 
 function getTracks() {
 	// GET request to `${SERVER}/api/tracks`
+	fetch(`${appVars.SERVER}/api/tracks`)
+	.then((res) => {
+		let newRes = res.json();
+		console.log(newRes);
+		return newRes;
+	})
+	.catch(err => console.log("Error while getting the tracks ::", err))
 }
 
 function getRacers() {
@@ -332,7 +343,7 @@ function createRace(player_id, track_id) {
 	track_id = parseInt(track_id)
 	const body = { player_id, track_id }
 	
-	return fetch(`${SERVER}/api/races`, {
+	return fetch(`${appVars.SERVER}/api/races`, {
 		method: 'POST',
 		...defaultFetchOpts(),
 		dataType: 'jsonp',
@@ -347,7 +358,7 @@ function getRace(id) {
 }
 
 function startRace(id) {
-	return fetch(`${SERVER}/api/races/${id}/start`, {
+	return fetch(`${appVars.SERVER}/api/races/${id}/start`, {
 		method: 'POST',
 		...defaultFetchOpts(),
 	})

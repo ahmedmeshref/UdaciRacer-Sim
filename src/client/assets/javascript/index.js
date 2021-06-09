@@ -208,6 +208,8 @@ function handleSelectTrack(target) {
 function handleAccelerate() {
 	console.log("accelerate button clicked");
 	// TODO - Invoke the API call to accelerate
+	const car_id = store.player_id;
+	accelerate(car_id);
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -395,7 +397,6 @@ function startRace(id) {
 		method: 'POST',
 		...defaultFetchOpts()
 	})
-		.then(res => res.json())
 		.catch((error) => console.log("Problem with startRace request::", error));
 }
 
@@ -404,6 +405,5 @@ function accelerate(id) {
 		method: 'POST',
 		...defaultFetchOpts()
 	})
-	.then(res => res.json())
-	.catch((error) => console.log("Problem with startRace request::", error));
+		.catch((error) => console.log("Problem with startRace request::", error));
 }

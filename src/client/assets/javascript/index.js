@@ -143,35 +143,45 @@ async function runCountdown() {
 }
 
 function handleSelectPodRacer(target) {
-	console.log("selected a pod", target.id);
+	try {
+		console.log("selected a pod", target.id);
 
-	// remove class selected from all racer options
-	const selected = document.querySelector('#racers .selected');
-	if (selected) {
-		selected.classList.remove('selected');
+		// remove class selected from all racer options
+		const selected = document.querySelector('#racers .selected');
+		if (selected) {
+			selected.classList.remove('selected');
+		}
+	
+		// add class selected to current target
+		target.classList.add('selected');
+	
+		// save the selected racer to the store
+		store.player_id = target.id;
 	}
-
-	// add class selected to current target
-	target.classList.add('selected');
-
-	// save the selected racer to the store
-	store.player_id = target.id;
+	catch (error) {
+		console.log('Error while updating the selected racer ::', error);
+	}
 }
 
 function handleSelectTrack(target) {
-	console.log("selected a track", target.id);
+	try {
+		console.log("selected a track", target.id);
 
-	// remove class selected from all track options
-	const selected = document.querySelector('#tracks .selected');
-	if (selected) {
-		selected.classList.remove('selected');
+		// remove class selected from all track options
+		const selected = document.querySelector('#tracks .selected');
+		if (selected) {
+			selected.classList.remove('selected');
+		}
+	
+		// add class selected to current target
+		target.classList.add('selected');
+	
+		// save the selected track id to the store
+		store.track_id = target.id;
 	}
-
-	// add class selected to current target
-	target.classList.add('selected');
-
-	// save the selected track id to the store
-	store.track_id = target.id;
+	catch (error) {
+		console.log('Error while updating the selected track ::', error);
+	}
 }
 
 function handleAccelerate() {

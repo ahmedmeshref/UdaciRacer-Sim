@@ -19,6 +19,8 @@ section#accelerate button {
     border: 2px solid #027ad6;
     background-color: #fff;
     cursor: pointer;
+    color: #027ad6;
+    font-size: 1.5rem;
 }
 
 section#accelerate button:hover {

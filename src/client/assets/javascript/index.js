@@ -188,7 +188,7 @@ function renderRacerCars(racers) {
 
 	return `
 		<ul id="racers">
-			${reuslts}
+			${results}
 		</ul>
 	`
 }
@@ -325,14 +325,14 @@ function defaultFetchOpts() {
 
 function getTracks() {
 	// GET request to `${SERVER}/api/tracks`
-	fetch(`${appVars.SERVER}/api/tracks`)
+	return fetch(`${appVars.SERVER}/api/tracks`)
 		.then((res) => res.json())
 		.catch(err => console.log("Error while getting the tracks from API ::", err));
 }
 
 function getRacers() {
 	// GET request to `${SERVER}/api/cars`
-	fetch(`${appVars.SERVER}/api/cars`)
+	return fetch(`${appVars.SERVER}/api/cars`)
 		.then((res) => res.json())
 		.catch(err => console.log("Error while getting the cars from API ::", err));
 }

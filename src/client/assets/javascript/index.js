@@ -76,29 +76,42 @@ async function delay(ms) {
 	try {
 		return await new Promise(resolve => setTimeout(resolve, ms));
 	} catch (error) {
-		console.log("an error shouldn't be possible here")
-		console.log(error)
+		console.log("an error shouldn't be possible here");
+		console.log(error);
 	}
 }
-// ^ PROVIDED CODE ^ DO NOT REMOVE
 
 // This async function controls the flow of the race, add the logic and error handling
 async function handleCreateRace() {
-	// render starting UI
-	renderAt('#race', renderRaceStartView())
+	try {
+		// Get the name of the currently selected track
+		const selectedTrackName = document.querySelector('.card.track.selected').innerText;
+		// Get player_id and track_id from the store
+		const { player_id, track_id } = store;
 
-	// TODO - Get player_id and track_id from the store
+		// render starting UI
+		renderAt('#race', renderRaceStartView(selectedTrackName));
 
-	// const race = TODO - invoke the API call to create the race, then save the result
+		// Invoke the API call to create the race, then save the result
+		const race = await createRace(player_id, track_id);
 
-	// TODO - update the store with the race id
+		// Update the store with the race id
+		store.race_id = race.ID;
 
-	// The race has been created, now start the countdown
-	// TODO - call the async function runCountdown
+		// The race has been created, now start the countdown
+		// Call the async function runCountdown
+		await runCountdown(3);
 
-	// TODO - call the async function startRace
+		// Call the async function startRace
+		await startRace();
 
-	// TODO - call the async function runRace
+		// Call the async function runRace
+		await runRace();
+	}
+	catch (error) {
+		console.log('Error creating new race ::', error.message);
+		console.error(error);
+	}
 }
 
 function runRace(raceID) {
@@ -122,20 +135,27 @@ function runRace(raceID) {
 	// remember to add error handling for the Promise
 }
 
-async function runCountdown() {
+
+async function runCountdown(count) {
 	try {
 		// wait for the DOM to load
-		await delay(1000)
-		let timer = 3
+		await delay(1000);
+		let timer = count;
 
 		return new Promise(resolve => {
+			function countDown() {
+				// run this DOM manipulation to decrement the countdown for the user
+				document.getElementById('big-numbers').innerHTML = timer--;
+
+				// if the countdown is done, clear the interval, resolve the promise, and return
+				if (timer == 0) {
+					clearInterval(timerInterval);
+					return;
+				}
+
+			}
 			// TODO - use Javascript's built in setInterval method to count down once per second
-
-			// run this DOM manipulation to decrement the countdown for the user
-			document.getElementById('big-numbers').innerHTML = --timer
-
-			// TODO - if the countdown is done, clear the interval, resolve the promise, and return
-
+			const timerInterval = setInterval(countDown, 1000);
 		})
 	} catch (error) {
 		console.log(error);
@@ -152,10 +172,10 @@ function handleSelectPodRacer(target) {
 			if (selected == target) return;
 			selected.classList.remove('selected');
 		}
-	
+
 		// add class selected to current target
 		target.classList.add('selected');
-	
+
 		// save the selected racer to the store
 		store.player_id = target.id;
 	}
@@ -174,10 +194,10 @@ function handleSelectTrack(target) {
 			if (selected == target) return;
 			selected.classList.remove('selected');
 		}
-	
+
 		// add class selected to current target
 		target.classList.add('selected');
-	
+
 		// save the selected track id to the store
 		store.track_id = target.id;
 	}
@@ -256,10 +276,10 @@ function renderCountdown(count) {
 	`
 }
 
-function renderRaceStartView(track, racers) {
+function renderRaceStartView(trackName) {
 	return `
 		<header>
-			<h1>Race: ${track.name}</h1>
+			<h1>Race: ${trackName}</h1>
 		</header>
 		<main id="two-columns">
 			<section id="leaderBoard">
@@ -318,9 +338,9 @@ function raceProgress(positions) {
 }
 
 function renderAt(element, html) {
-	const node = document.querySelector(element)
+	const node = document.querySelector(element);
 
-	node.innerHTML = html
+	node.innerHTML = html;
 }
 
 // ^ Provided code ^ do not remove
@@ -337,8 +357,6 @@ function defaultFetchOpts() {
 		},
 	}
 }
-
-// API CALLS
 
 function getTracks() {
 	// GET request to `${SERVER}/api/tracks`

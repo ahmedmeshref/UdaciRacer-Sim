@@ -131,6 +131,7 @@ function runRace(raceID) {
 			renderAt('#race', resultsView(res.positions)) // to render the results view
 			reslove(res) // resolve the promise
 		*/
+		const raceInfo = setInterval(updateRaceBoard, 500);
 	})
 	// remember to add error handling for the Promise
 }
@@ -390,6 +391,10 @@ function createRace(player_id, track_id) {
 
 function getRace(id) {
 	// GET request to `${SERVER}/api/races/${id}`
+
+	return fetch(`${appVars.SERVER}/api/races/${id}`)
+		.then(res => res.json())
+		.catch(err => console.log("Problem with createRace request::", err))
 }
 
 function startRace(id) {

@@ -161,7 +161,7 @@ async function runCountdown(count) {
 					resolve();
 				}
 			}
-			// TODO - use Javascript's built in setInterval method to count down once per second
+			// Count down once per second
 			const timerInterval = setInterval(countDown, 1000);
 		})
 	} catch (error) {
@@ -215,7 +215,7 @@ function handleSelectTrack(target) {
 
 function handleAccelerate(raceID) {
 	console.log("accelerate button clicked");
-	// TODO - Invoke the API call to accelerate
+	// Invoke the API call to accelerate
 	accelerate(raceID);
 }
 

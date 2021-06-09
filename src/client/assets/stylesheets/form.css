@@ -18,12 +18,12 @@ form li {
 
 form li:hover {
     box-shadow: none;
-    border: 1px solid rgb(109, 233, 23);
+    border: 1px solid #027ad6;
 }
 
 form li.selected {
-    border: 1px solid rgb(109, 233, 23);
-    box-shadow: 5px 7px 5px 0 rgba(109, 233, 23, .30);
+    border: 1px solid #027ad6;
+    box-shadow: 5px 7px 5px 0 rgba( 2, 122, 214, .30);
 }
 
 form li h3 {

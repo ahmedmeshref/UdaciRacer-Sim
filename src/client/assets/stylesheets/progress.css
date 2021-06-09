@@ -16,9 +16,14 @@ section#accelerate button {
     width: 300px;
     margin: 30px auto;
     border-radius: 180%;
-    background-color: green;
-    border-color: rgb(14, 166, 6);
+    border: 2px solid #027ad6;
+    background-color: #fff;
     cursor: pointer;
+}
+
+section#accelerate button:hover {
+    background-color: #027ad6;
+    color: #fff;
 }
 
 #big-numbers {

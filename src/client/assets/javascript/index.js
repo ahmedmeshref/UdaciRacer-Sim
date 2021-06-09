@@ -66,7 +66,7 @@ function setupClickHandlers() {
 
 		// Handle acceleration click
 		if (target.matches('#gas-peddle')) {
-			handleAccelerate(target);
+			handleAccelerate(store.race_id);
 		}
 
 	}, false)
@@ -213,11 +213,10 @@ function handleSelectTrack(target) {
 	}
 }
 
-function handleAccelerate() {
+function handleAccelerate(raceID) {
 	console.log("accelerate button clicked");
 	// TODO - Invoke the API call to accelerate
-	const car_id = store.player_id;
-	accelerate(car_id);
+	accelerate(raceID);
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -314,7 +313,7 @@ function resultsView(positions) {
 		</header>
 		<main>
 			${raceProgress(positions)}
-			<a href="/race">Start a new race</a>
+			<a class="button" href="/race">Start a new race</a>
 		</main>
 	`
 }
@@ -322,11 +321,10 @@ function resultsView(positions) {
 function raceProgress(positions) {
 	console.log(store.player_id);
 	try {
-		positions.forEach(player => {
-			if (parseInt(player.id) === parseInt(store.player_id)) {
-				userPlayer.driver_name += " (you)";
-			};
-		});
+		const userPlayer = positions.find((player) => parseInt(player.id) === parseInt(store.player_id));
+		if (userPlayer) {
+			userPlayer.driver_name += " (you)"
+		};
 
 		positions = positions.sort((a, b) => (a.segment > b.segment) ? -1 : 1)
 		let count = 1

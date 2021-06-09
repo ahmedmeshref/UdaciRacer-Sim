@@ -149,6 +149,7 @@ function handleSelectPodRacer(target) {
 		// remove class selected from all racer options
 		const selected = document.querySelector('#racers .selected');
 		if (selected) {
+			if (selected == target) return;
 			selected.classList.remove('selected');
 		}
 	
@@ -170,6 +171,7 @@ function handleSelectTrack(target) {
 		// remove class selected from all track options
 		const selected = document.querySelector('#tracks .selected');
 		if (selected) {
+			if (selected == target) return;
 			selected.classList.remove('selected');
 		}
 	
